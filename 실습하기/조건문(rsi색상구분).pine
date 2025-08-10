@@ -5,13 +5,8 @@ hline(70) //과매수 수치
 hline(30) //과매도 수치
 
 rsi = ta.rsi(close, 14)
-rsiColor = color.purple
-if rsi > 70
-  rsiColor := color.green
-else if rsi > 50
-  rsiColor := color.yellow
-else if rsi > 30
-  rsiColor := color.purple
-else
-  rsiColor := color.red
+rsiColor = rsi > 70 ? color.green : 
+           rsi > 50 ? color.yellow : 
+           rsi > 30 ? color.purple : color.red
+
 plot(rsi, color = rsiColor)
