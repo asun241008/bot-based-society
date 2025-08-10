@@ -1,6 +1,6 @@
 
 indicator("중간선 지표", overlay = true, behind_chart = false)
 
-midPrice = (high + low) = 2
+midPrice = (high + low) / 2
 plot(midPrice, color = color.yellow, linewidth =2)
 plotshape(close > midPrice, style = shape.arrowup, location = location.belowbar, color = color.green)
