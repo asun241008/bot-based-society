@@ -1,0 +1,7 @@
+
+indicator("중간선 지표", overlay = true, behind_chart = false)
+
+midPrice = (high + low) / 2
+percent_bar = (high - low)/low*100
+plot(midPrice, color = color.yellow, linewidth =2)
+plotshape(close > midPrice and close > open and percent_bar >= 5, style = shape.arrowup, location = location.belowbar, color = color.green)
