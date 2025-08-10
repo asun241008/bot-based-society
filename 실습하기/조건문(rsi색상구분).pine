@@ -1,0 +1,17 @@
+
+indicator("RSI 신호 지표")
+
+hline(70) //과매수 수치
+hline(30) //과매도 수치
+
+rsi = ta.rsi(close, 14)
+rsiColor = color.purple
+if rsi > 70
+  rsiColor := color.green
+else if rsi > 50
+  rsiColor := color.yellow
+else if rsi > 30
+  rsiColor := color.purple
+else
+  rsiColor := color.red
+plot(rsi, color = rsiColor)
