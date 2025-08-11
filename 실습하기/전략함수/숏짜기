@@ -6,5 +6,5 @@ plot(rsi, color = color.purple)
 
 if rsi > 70
     strategy.entry("숏", strategy.short)
-if rsi < 70
+if rsi < 30
     strategy.close("숏")
