@@ -1,0 +1,15 @@
+
+strategy("추세추종 전략", overlay=true, fill_orders_on_standard_ohlc = true, margin_long = 0, margin_short = 0, process_orders_on_close = true, initial_capital = 1000, default_qty_type = strategy.percent_of_equity, default_qty_value = 100)
+
+highest = ta.highest(high[1], 20)
+plot(highest, color = color.green, linewidth = 2)
+
+isLong = ta.crossover(high, highest)
+if isLong
+    strategy.entry("롱", strategy.long)
+
+rsi = ta.rsi(close, 14)
+is_long_close = ta.crossover(rsi, 70)
+
+if is_long_close
+    strategy.close("롱")
