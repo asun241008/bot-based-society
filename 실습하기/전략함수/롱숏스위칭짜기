@@ -1,0 +1,11 @@
+
+strategy("RSI 전략", overlay=false, fill_orders_on_standard_ohlc = true, process_orders_on_close = true, initial_capital = 1000, default_qty_type = strategy.percent_of_equity, default_qty_value = 10, margin_long = 0, margin_short = 0)
+
+rsi = ta.rsi(close, 14)
+plot(rsi, color = color.purple)
+
+if rsi > 70
+    strategy.entry("숏", strategy.short)
+    
+if rsi < 30
+    strategy.entry("롱", strategy.long)
