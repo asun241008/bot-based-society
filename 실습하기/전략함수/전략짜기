@@ -1,11 +1,10 @@
 
-strategy("RSI 전략", overlay=true, fill_orders_on_standard_ohlc = true)
+strategy("RSI 전략", overlay=false, fill_orders_on_standard_ohlc = true)
 
 rsi = ta.rsi(close, 14)
 plot(rsi, color = color.purple)
 
 if rsi < 30
-  strategy.entry("롱", strategy.long)
-
+    strategy.entry("롱", strategy.long)
 if rsi > 70
-  strategy.close("롱") //진입한 ID와 일치해야 인식된다.
+    strategy.close("롱")  // entry ID와 정확히 일치해야 함
