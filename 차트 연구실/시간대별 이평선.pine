@@ -1,24 +1,92 @@
 //@version=5
 indicator("Auto MA by Timeframe", overlay=true)
 
+// ===== 1분봉 설정 =====
+ma1_1m = input.int(8, "1분봉 - 단기선1", minval=1, group="1분봉")
+ma2_1m = input.int(18, "1분봉 - 단기선2", minval=1, group="1분봉")
+ma3_1m = input.int(100, "1분봉 - 장기선1", minval=1, group="1분봉")
+ma4_1m = input.int(200, "1분봉 - 장기선2", minval=1, group="1분봉")
+
+// ===== 3분봉 설정 =====
+ma1_3m = input.int(8, "3분봉 - 단기선1", minval=1, group="3분봉")
+ma2_3m = input.int(18, "3분봉 - 단기선2", minval=1, group="3분봉")
+ma3_3m = input.int(100, "3분봉 - 장기선1", minval=1, group="3분봉")
+ma4_3m = input.int(200, "3분봉 - 장기선2", minval=1, group="3분봉")
+
+// ===== 5분봉 설정 =====
+ma1_5m = input.int(8, "5분봉 - 단기선1", minval=1, group="5분봉")
+ma2_5m = input.int(18, "5분봉 - 단기선2", minval=1, group="5분봉")
+ma3_5m = input.int(100, "5분봉 - 장기선1", minval=1, group="5분봉")
+ma4_5m = input.int(200, "5분봉 - 장기선2", minval=1, group="5분봉")
+
+// ===== 15분봉 설정 =====
+ma1_15m = input.int(8, "15분봉 - 단기선1", minval=1, group="15분봉")
+ma2_15m = input.int(18, "15분봉 - 단기선2", minval=1, group="15분봉")
+ma3_15m = input.int(768, "15분봉 - 장기선1", minval=1, group="15분봉")
+ma4_15m = input.int(1728, "15분봉 - 장기선2", minval=1, group="15분봉")
+
+// ===== 30분봉 설정 =====
+ma1_30m = input.int(8, "30분봉 - 단기선1", minval=1, group="30분봉")
+ma2_30m = input.int(18, "30분봉 - 단기선2", minval=1, group="30분봉")
+ma3_30m = input.int(384, "30분봉 - 장기선1", minval=1, group="30분봉")
+ma4_30m = input.int(864, "30분봉 - 장기선2", minval=1, group="30분봉")
+
+// ===== 1시간봉 설정 =====
+ma1_1h = input.int(8, "1시간봉 - 단기선1", minval=1, group="1시간봉")
+ma2_1h = input.int(18, "1시간봉 - 단기선2", minval=1, group="1시간봉")
+ma3_1h = input.int(192, "1시간봉 - 장기선1", minval=1, group="1시간봉")
+ma4_1h = input.int(432, "1시간봉 - 장기선2", minval=1, group="1시간봉")
+
+// ===== 2시간봉 설정 =====
+ma1_2h = input.int(8, "2시간봉 - 단기선1", minval=1, group="2시간봉")
+ma2_2h = input.int(18, "2시간봉 - 단기선2", minval=1, group="2시간봉")
+ma3_2h = input.int(96, "2시간봉 - 장기선1", minval=1, group="2시간봉")
+ma4_2h = input.int(216, "2시간봉 - 장기선2", minval=1, group="2시간봉")
+
+// ===== 4시간봉 설정 =====
+ma1_4h = input.int(8, "4시간봉 - 단기선1", minval=1, group="4시간봉")
+ma2_4h = input.int(18, "4시간봉 - 단기선2", minval=1, group="4시간봉")
+ma3_4h = input.int(48, "4시간봉 - 장기선1", minval=1, group="4시간봉")
+ma4_4h = input.int(108, "4시간봉 - 장기선2", minval=1, group="4시간봉")
+
+// ===== 일봉 이상 설정 =====
+ma1_daily = input.int(8, "일봉이상 - 단기선1", minval=1, group="일봉 이상")
+ma2_daily = input.int(18, "일봉이상 - 단기선2", minval=1, group="일봉 이상")
+ma3_daily = input.int(365, "일봉이상 - 장기선1", minval=1, group="일봉 이상")
+ma4_daily = input.int(730, "일봉이상 - 장기선2", minval=1, group="일봉 이상")
+
+// ===== 색상 설정 (모든 시간봉 공통) =====
+color1 = input.color(color.yellow, "단기선1 색상", group="색상 설정")
+color2 = input.color(color.blue, "단기선2 색상", group="색상 설정")
+color3 = input.color(color.yellow, "장기선1 색상", group="색상 설정")
+color4 = input.color(color.blue, "장기선2 색상", group="색상 설정")
+
+// ===== 표시 옵션 =====
+table_position = input.string("bottom_left", "테이블 위치", options=["top_left", "top_right", "bottom_left", "bottom_right", "middle_left", "middle_right", "hide"], group="표시 옵션")
+
 // 시간프레임별 이동평균선 수치 자동 설정
 get_ma_period(tf_minutes) =>
     switch tf_minutes
-        1   => [8, 18, 100, 200]      // 1분봉
-        3   => [8, 18, 100, 200]    // 3분봉  
-        5   => [8, 18, 100, 200]    // 5분봉
-        15  => [8, 18, 768, 1728]   // 15분봉
-        30  => [8, 18, 384, 864]   // 30분봉
-        60  => [8, 18, 192, 432]   // 1시간봉
-        120 => [8, 18, 96, 216]
-        240 => [8, 18, 48, 108]     // 4시간봉
-        => [8, 18, 365, 730]        // 일봉 이상 (기본값)
+        1   => [ma1_1m, ma2_1m, ma3_1m, ma4_1m]
+        3   => [ma1_3m, ma2_3m, ma3_3m, ma4_3m]
+        5   => [ma1_5m, ma2_5m, ma3_5m, ma4_5m]
+        15  => [ma1_15m, ma2_15m, ma3_15m, ma4_15m]
+        30  => [ma1_30m, ma2_30m, ma3_30m, ma4_30m]
+        60  => [ma1_1h, ma2_1h, ma3_1h, ma4_1h]
+        120 => [ma1_2h, ma2_2h, ma3_2h, ma4_2h]
+        240 => [ma1_4h, ma2_4h, ma3_4h, ma4_4h]
+        => [ma1_daily, ma2_daily, ma3_daily, ma4_daily]
+
+// 시간프레임별 색상 자동 설정
+get_ma_colors(tf_minutes) =>
+    [color1, color2, color3, color4]  // 모든 시간봉에서 동일한 색상 사용
 
 // 현재 시간프레임을 분 단위로 변환
 current_tf_minutes = timeframe.in_seconds() / 60
 
-// 해당 시간프레임의 이동평균선 수치 가져오기
+// 해당 시간프레임의 이동평균선 수치 및 색상 가져오기
 [ma1_period, ma2_period, ma3_period, ma4_period] = get_ma_period(current_tf_minutes)
+[ma1_color, ma2_color, ma3_color, ma4_color] = get_ma_colors(current_tf_minutes)
 
 // 이동평균선 계산
 ma1 = ta.sma(close, ma1_period)
@@ -26,16 +94,13 @@ ma2 = ta.sma(close, ma2_period)
 ma3 = ta.sma(close, ma3_period)
 ma4 = ta.sma(close, ma4_period)
 
-// 차트에 그리기
-plot(ma1, "단기선1", color=color.yellow, linewidth=1)
-plot(ma2, "단기선2", color=color.blue, linewidth=1)
-plot(ma3, "장기선1", color=color.yellow, linewidth=2)
-plot(ma4, "장기선2", color=color.blue, linewidth=2)
+// 차트에 그리기 (시간봉별 색상 적용)
+plot(ma1, "단기선1", color=ma1_color, linewidth=1)
+plot(ma2, "단기선2", color=ma2_color, linewidth=1)
+plot(ma3, "장기선1", color=ma3_color, linewidth=2)
+plot(ma4, "장기선2", color=ma4_color, linewidth=2)
 
-// 테이블 위치 설정 (사용자가 선택 가능)
-table_position = input.string("bottom_left", "테이블 위치", options=["top_left", "top_right", "bottom_left", "bottom_right", "middle_left", "middle_right", "hide"])
-
-// 현재 설정 표시 (위치 선택 가능)
+// 테이블 위치 설정
 get_table_position(pos_string) =>
     switch pos_string
         "top_left" => position.top_left
