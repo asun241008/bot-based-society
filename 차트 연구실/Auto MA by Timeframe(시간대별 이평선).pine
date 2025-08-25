@@ -56,10 +56,10 @@ ma3_daily = input.int(365, "일봉이상 - 장기선1", minval=1, group="일봉 
 ma4_daily = input.int(730, "일봉이상 - 장기선2", minval=1, group="일봉 이상")
 
 // ===== 색상 설정 (모든 시간봉 공통) =====
-color1 = input.color(color.yellow, "단기선1 색상", group="색상 설정")
-color2 = input.color(color.blue, "단기선2 색상", group="색상 설정")
-color3 = input.color(color.yellow, "장기선1 색상", group="색상 설정")
-color4 = input.color(color.blue, "장기선2 색상", group="색상 설정")
+color1 = input.color(color.yellow, "단기선1", group="색상 설정")
+color2 = input.color(color.blue, "단기선2", group="색상 설정")
+color3 = input.color(color.yellow, "장기선1", group="색상 설정")
+color4 = input.color(color.blue, "장기선2", group="색상 설정")
 
 // ===== 표시 옵션 =====
 table_position = input.string("bottom_left", "테이블 위치", options=["top_left", "top_right", "bottom_left", "bottom_right", "middle_left", "middle_right", "hide"], group="표시 옵션")
